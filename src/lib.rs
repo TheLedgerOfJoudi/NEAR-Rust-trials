@@ -1,5 +1,5 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
-use near_sdk::{env, near_bindgen, AccountId};
+use near_sdk::{near_bindgen, AccountId};
 near_sdk::setup_alloc!();
 use near_sdk::collections::UnorderedMap;
 
@@ -23,16 +23,10 @@ impl NftOwners {
         self.owners.insert(&token_id, &account_id);
     }
 
-    pub fn get_owner(&self, token_id: String) -> Option<AccountId> {
-        return self.owners.get(&token_id);
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
+    pub fn get_owner(&self, token_id: String) -> AccountId {
+        match self.owners.get(&token_id) {
+            Some(owner) => owner,
+            None => "No owner found".to_string(),
+        }
     }
 }
